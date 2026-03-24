@@ -1,0 +1,28 @@
+seed: 99
+output_format: csv
+output_dir: ./tests/output_test
+locale: pt_BR
+
+date_range:
+  start: "2023-01-01"
+  end: "2025-12-31"   # 36 meses → série temporal suficiente para detecção de fraude
+
+volumes:
+  transformers: 30
+  consumer_units: 300      # suficiente para significância estatística nos testes de fraude
+  electricians: 20
+  meter_readers: 15
+  inspections: 60
+  declared_load_max_per_unit: 3
+  max_work_orders_per_unit: 3
+
+fraud:
+  fraud_rate: 0.15               # 15% → 45 UCs fraudulentas (volume testável)
+  gradual_drop_pct: 0.40         # 18 UCs com queda gradual
+  electrician_correlation_pct: 0.30
+  reader_corruption_pct: 0.20
+  network_clusters: 3
+  recurrence_rate: 0.10
+
+reading_occurrence_rate: 0.10
+meter_image_rate: 0.20

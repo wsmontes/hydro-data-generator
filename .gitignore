@@ -1,0 +1,43 @@
+# Generated dataset outputs
+output/
+output_large/
+tests/output_test/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging and build artifacts
+build/
+dist/
+.eggs/
+*.egg-info/
+pip-wheel-metadata/
+
+# Test and coverage artifacts
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Type checker / linter caches
+.mypy_cache/
+.ruff_cache/
+.pyre/
+
+# Test automation environments
+.tox/
+.nox/
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+.DS_Store

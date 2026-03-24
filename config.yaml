@@ -1,0 +1,28 @@
+seed: 42
+output_format: csv   # csv ou parquet
+output_dir: ./output
+locale: pt_BR
+
+date_range:
+  start: "2023-01-01"
+  end: "2025-12-31"
+
+volumes:
+  transformers: 50
+  consumer_units: 500
+  electricians: 20
+  meter_readers: 15
+  inspections: 80
+  declared_load_max_per_unit: 4
+  max_work_orders_per_unit: 3
+
+fraud:
+  fraud_rate: 0.08               # 8% das UCs têm padrão suspeito
+  gradual_drop_pct: 0.40         # 40% da fraude = queda gradual no consumo
+  electrician_correlation_pct: 0.30  # 30% correlacionado a eletricista
+  reader_corruption_pct: 0.20    # 20% = leiturista suspeito
+  network_clusters: 3            # grupos de fraude conectados (para grafo)
+  recurrence_rate: 0.10          # 10% das inspeções são reincidentes
+
+reading_occurrence_rate: 0.10    # % das leituras que geram ocorrência
+meter_image_rate: 0.20           # % das leituras com imagem registrada
