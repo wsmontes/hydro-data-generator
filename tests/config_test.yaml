@@ -26,3 +26,16 @@ fraud:
 
 reading_occurrence_rate: 0.10
 meter_image_rate: 0.20
+
+external:
+  companies_extra_pct: 0.15
+  qsa_pf_participation_pct: 0.30
+  sanction_rate: 0.05              # ligeiramente maior para significância nos testes
+  sanction_fraud_boost: 0.40
+  fraud_score_coverage: 1.0
+  legal_process_rate: 0.10
+  legal_fraud_boost_factor: 3
+  debt_rate: 0.15
+  debt_fraud_correlation: 0.60
+  osint_rate: 0.06
+  osint_sanction_boost: 0.70

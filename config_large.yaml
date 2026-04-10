@@ -27,3 +27,19 @@ fraud:
 
 reading_occurrence_rate: 0.10
 meter_image_rate: 0.20
+
+# ---------------------------------------------------------------------------
+# Dados externos (gerados por generate_external.py)
+# ---------------------------------------------------------------------------
+external:
+  companies_extra_pct: 0.15          # 15% empresas extras além dos PJ existentes
+  qsa_pf_participation_pct: 0.30     # 30% dos PF viram sócios
+  sanction_rate: 0.03                # 3% taxa geral de sanção
+  sanction_fraud_boost: 0.40         # 40% dos fraudulentos sancionados
+  fraud_score_coverage: 1.0          # 100% dos CPF/CNPJ passam por scoring
+  legal_process_rate: 0.08           # 8% envolvidos em processos
+  legal_fraud_boost_factor: 3        # 3x mais processos para fraudulentos
+  debt_rate: 0.12                    # 12% com dívidas
+  debt_fraud_correlation: 0.60       # 60% dos fraudulentos com dívida
+  osint_rate: 0.04                   # 4% com eventos OSINT
+  osint_sanction_boost: 0.70         # 70% dos sancionados com evento OSINT

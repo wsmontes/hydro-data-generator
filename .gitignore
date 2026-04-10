@@ -41,3 +41,4 @@ htmlcov/
 .idea/
 *.swp
 .DS_Store
+output_large.zip

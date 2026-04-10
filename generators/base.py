@@ -136,3 +136,63 @@ CONSUMER_PROFILES = {
     "industrial":          {"mean": 6000, "std": 1500,"weight": 0.04},
     "rural":               {"mean": 150,  "std": 40,  "weight": 0.03},
 }
+
+
+# ---------------------------------------------------------------------------
+# Carregamento de contexto existente (geração incremental)
+# ---------------------------------------------------------------------------
+
+def load_existing_context(config: dict[str, Any]) -> dict[str, pd.DataFrame]:
+    """
+    Carrega CSVs/parquets já gerados para o dicionário de contexto.
+    Reconstrói informação de fraude a partir de inspection + consumer_unit.
+    """
+    output_dir = Path(config.get("output_dir", "./output"))
+    fmt = config.get("output_format", "csv").lower()
+
+    tables = [
+        "economic_activity", "address", "customer", "electrician",
+        "meter_reader", "transformer", "consumer_unit", "meter_reading",
+        "transformer_reading", "reading_occurrence", "meter_image",
+        "reading_agent", "work_order", "inspection", "declared_load",
+        "external_property_data",
+    ]
+
+    context: dict[str, pd.DataFrame] = {}
+    for table in tables:
+        ext = "csv" if fmt == "csv" else "parquet"
+        path = output_dir / f"{table}.{ext}"
+        if path.exists():
+            df = pd.read_csv(path) if fmt == "csv" else pd.read_parquet(path)
+            context[table] = df
+            print(f"  ✓ {table}: {len(df):,} linhas carregadas")
+
+    # Reconstrói informação de fraude a partir de inspection + consumer_unit
+    if "inspection" in context and "consumer_unit" in context:
+        fraud_consumer_ids = set(
+            context["inspection"]
+            .loc[
+                context["inspection"]["resultado"] == "irregularidade_confirmada",
+                "consumer_id",
+            ]
+            .unique()
+        )
+        cu_df = context["consumer_unit"].copy()
+        cu_df["is_fraud"] = cu_df["consumer_id"].isin(fraud_consumer_ids)
+        context["consumer_unit_full"] = cu_df
+
+        fraud_cpf_cnpj = set(
+            cu_df.loc[cu_df["is_fraud"], "cpf_cnpj"].dropna().unique()
+        )
+        context["_fraud_cpf_cnpj"] = fraud_cpf_cnpj
+        print(f"  ✓ Entidades fraudulentas identificadas: {len(fraud_cpf_cnpj):,}")
+
+    return context
+
+
+def strip_doc(cpf_cnpj: str) -> str:
+    """Remove formatação de CPF/CNPJ, retornando apenas dígitos com zero-padding."""
+    raw = "".join(c for c in str(cpf_cnpj) if c.isdigit())
+    if len(raw) > 11:
+        return raw.zfill(14)   # CNPJ
+    return raw.zfill(11)       # CPF
